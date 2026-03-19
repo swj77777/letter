@@ -27,7 +27,7 @@ body {
   display: block;
 }
 
-/* 🎂 케이크 */
+/* 🎂 */
 .cake {
   font-size: 72px;
   cursor: pointer;
@@ -43,13 +43,13 @@ body {
   color: #888;
 }
 
-/* 🔢 카운트 */
+/* 🔢 */
 .counter {
   font-size: 48px;
   color: #ff5c8a;
 }
 
-/* 🎉 결과 */
+/* 🎉 */
 .result {
   font-size: 28px;
   font-weight: 600;
@@ -62,7 +62,7 @@ body {
   50% { transform: translateY(-6px); }
 }
 
-/* 📊 타임라인 */
+/* 📊 */
 .timeline {
   display: flex;
   flex-wrap: wrap;
@@ -107,13 +107,13 @@ body {
 }
 
 .close {
-  margin-top: 10px;
+  margin-top: 12px;
   font-size: 14px;
-  color: #999;
+  color: #ff5c8a;
   cursor: pointer;
 }
 
-/* 💥 떨어지는 폭죽 */
+/* 💥 */
 .falling {
   position: fixed;
   top: -20px;
@@ -122,39 +122,34 @@ body {
 }
 
 @keyframes fall {
-  0% {
-    transform: translateY(0) rotate(0deg);
-    opacity: 1;
-  }
-  100% {
-    transform: translateY(100vh) rotate(360deg);
-    opacity: 0;
-  }
+  0% { transform: translateY(0) rotate(0deg); opacity:1; }
+  100% { transform: translateY(100vh) rotate(360deg); opacity:0; }
 }
 </style>
 </head>
 
 <body>
 
-<!-- 1️⃣ 케이크 -->
+<!-- 1️⃣ -->
 <div id="screen1" class="screen active">
   <div class="cake" onclick="start()">🎂</div>
   <div class="cake-hint">click me</div>
 </div>
 
-<!-- 2️⃣ 카운트 -->
+<!-- 2️⃣ -->
 <div id="screen2" class="screen">
   <div class="counter" id="counter">0</div>
 </div>
 
-<!-- 3️⃣ 결과 -->
+<!-- 3️⃣ -->
 <div id="screen3" class="screen">
   <div class="result" onclick="goTimeline()">Happy 600 Days! 💖</div>
 </div>
 
-<!-- 4️⃣ 타임라인 -->
+<!-- 4️⃣ -->
 <div id="screen4" class="screen">
   <div class="timeline">
+    <button onclick="showContent('0')">0일</button>
     <button onclick="showContent('100')">100일</button>
     <button onclick="showContent('200')">200일</button>
     <button onclick="showContent('300')">300일</button>
@@ -165,12 +160,12 @@ body {
   </div>
 </div>
 
-<!-- 📸 모달 -->
+<!-- 📸 -->
 <div id="modal" class="modal" onclick="closeModal()">
   <div class="modal-content" onclick="event.stopPropagation()">
     <img id="modal-img">
     <p id="modal-text"></p>
-    <div class="close">닫기</div>
+    <div class="close" onclick="closeModal()">닫기</div>
   </div>
 </div>
 
@@ -180,7 +175,6 @@ function switchScreen(n){
   document.getElementById('screen'+n).classList.add('active');
 }
 
-/* 🎂 시작 */
 function start(){
   switchScreen(2);
   let n=0;
@@ -200,12 +194,10 @@ function start(){
   },4);
 }
 
-/* 🎉 → 타임라인 */
 function goTimeline(){
   switchScreen(4);
 }
 
-/* 💥 떨어지는 폭죽 */
 function fireworks(){
   for(let i=0;i<50;i++){
     const el=document.createElement('div');
@@ -216,12 +208,10 @@ function fireworks(){
     el.style.animationDuration=(2+Math.random()*2)+'s';
 
     document.body.appendChild(el);
-
     setTimeout(()=>el.remove(),3000);
   }
 }
 
-/* 📸 콘텐츠 */
 function showContent(type){
   const modal=document.getElementById('modal');
   const img=document.getElementById('modal-img');
@@ -229,28 +219,32 @@ function showContent(type){
 
   modal.style.display='flex';
 
+  if(type==='0'){
+    img.src='images/0.jpg';
+    text.innerText='처음 만난 날 💖';
+  }
   if(type==='100'){
-    img.src='your100.jpg';
+    img.src='images/100.jpg';
     text.innerText='100일 추억';
   }
   if(type==='200'){
-    img.src='your200.jpg';
+    img.src='images/200.jpg';
     text.innerText='200일';
   }
   if(type==='300'){
-    img.src='your300.jpg';
+    img.src='images/300.jpg';
     text.innerText='300일';
   }
   if(type==='1year'){
-    img.src='your1year.jpg';
+    img.src='images/1year.jpg';
     text.innerText='1주년';
   }
   if(type==='400'){
-    img.src='your400.jpg';
+    img.src='images/400.jpg';
     text.innerText='400일';
   }
   if(type==='500'){
-    img.src='your500.jpg';
+    img.src='images/500.jpg';
     text.innerText='500일';
   }
   if(type==='letter'){
@@ -261,7 +255,6 @@ function showContent(type){
   }
 }
 
-/* 모달 닫기 */
 function closeModal(){
   document.getElementById('modal').style.display='none';
 }
