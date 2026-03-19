@@ -19,19 +19,20 @@
       background: linear-gradient(135deg, #ffd6e7, #ffe9f3);
     }
 
-    /* 🎂 케이크 */
+    /* 🎂 케이크 (이모티콘) */
     .cake-container {
       text-align: center;
       cursor: pointer;
+      animation: fadeIn 1s ease;
     }
 
-    .cake-container img {
-      width: 200px;
+    .cake {
+      font-size: 80px;
       transition: transform 0.3s;
     }
 
-    .cake-container img:hover {
-      transform: scale(1.1);
+    .cake-container:hover .cake {
+      transform: scale(1.2);
     }
 
     .cake-text {
@@ -98,15 +99,20 @@
       20% { opacity: 1; }
       100% { transform: translateY(-10vh); opacity: 0; }
     }
+
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
   </style>
 </head>
 
 <body>
 
-<!-- 🎂 케이크 (수정된 안정 이미지) -->
+<!-- 🎂 이모티콘 케이크 -->
 <div class="cake-container" onclick="openLetter()">
-  <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/0/0b/Cake_icon.svg/512px-Cake_icon.svg.png" alt="cake">
-  <div class="cake-text">케이크를 눌러봐 🎂</div>
+  <div class="cake">🎂</div>
+  <div class="cake-text">케이크를 눌러봐</div>
 </div>
 
 <!-- 📩 편지 -->
