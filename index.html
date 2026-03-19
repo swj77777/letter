@@ -15,9 +15,10 @@ body {
   justify-content: center;
   align-items: center;
   height: 100vh;
+  overflow: hidden;
 }
 
-/* 공통 */
+/* 화면 */
 .screen {
   display: none;
   text-align: center;
@@ -26,27 +27,42 @@ body {
   display: block;
 }
 
-/* 🎂 */
+/* 🎂 케이크 */
 .cake {
   font-size: 72px;
   cursor: pointer;
+  animation: bounce 1.4s infinite;
+}
+@keyframes bounce {
+  0%,100% { transform: translateY(0); }
+  50% { transform: translateY(-12px); }
+}
+.cake-hint {
+  margin-top: 8px;
+  font-size: 12px;
+  color: #888;
 }
 
-/* 🔢 */
+/* 🔢 카운트 */
 .counter {
   font-size: 48px;
   color: #ff5c8a;
 }
 
-/* 🎉 */
+/* 🎉 결과 */
 .result {
   font-size: 28px;
   font-weight: 600;
   color: #ff3e7f;
   cursor: pointer;
+  animation: bounceText 1.2s infinite;
+}
+@keyframes bounceText {
+  0%,100% { transform: translateY(0); }
+  50% { transform: translateY(-6px); }
 }
 
-/* 📊 */
+/* 📊 타임라인 */
 .timeline {
   display: flex;
   flex-wrap: wrap;
@@ -63,21 +79,58 @@ body {
   cursor: pointer;
 }
 
-/* 📸 */
-.card {
-  margin-top: 20px;
-  background: white;
-  border-radius: 20px;
-  padding: 20px;
-  width: 280px;
-  box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+/* 📸 모달 */
+.modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: none;
+  justify-content: center;
+  align-items: center;
+  background: rgba(0,0,0,0.5);
 }
 
-.card img {
+.modal-content {
+  background: white;
+  padding: 20px;
+  border-radius: 20px;
+  width: 80%;
+  max-width: 320px;
+  text-align: center;
+}
+
+.modal img {
   width: 100%;
   border-radius: 12px;
 }
 
+.close {
+  margin-top: 10px;
+  font-size: 14px;
+  color: #999;
+  cursor: pointer;
+}
+
+/* 💥 떨어지는 폭죽 */
+.falling {
+  position: fixed;
+  top: -20px;
+  font-size: 18px;
+  animation: fall linear forwards;
+}
+
+@keyframes fall {
+  0% {
+    transform: translateY(0) rotate(0deg);
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(100vh) rotate(360deg);
+    opacity: 0;
+  }
+}
 </style>
 </head>
 
@@ -86,6 +139,7 @@ body {
 <!-- 1️⃣ 케이크 -->
 <div id="screen1" class="screen active">
   <div class="cake" onclick="start()">🎂</div>
+  <div class="cake-hint">click me</div>
 </div>
 
 <!-- 2️⃣ 카운트 -->
@@ -109,10 +163,14 @@ body {
     <button onclick="showContent('500')">500일</button>
     <button onclick="showContent('letter')">💌 Letter</button>
   </div>
+</div>
 
-  <div id="card" class="card" style="display:none;">
-    <img id="photo">
-    <p id="text"></p>
+<!-- 📸 모달 -->
+<div id="modal" class="modal" onclick="closeModal()">
+  <div class="modal-content" onclick="event.stopPropagation()">
+    <img id="modal-img">
+    <p id="modal-text"></p>
+    <div class="close">닫기</div>
   </div>
 </div>
 
@@ -122,7 +180,7 @@ function switchScreen(n){
   document.getElementById('screen'+n).classList.add('active');
 }
 
-/* 🎂 → 카운트 */
+/* 🎂 시작 */
 function start(){
   switchScreen(2);
   let n=0;
@@ -147,56 +205,65 @@ function goTimeline(){
   switchScreen(4);
 }
 
-/* 💥 */
+/* 💥 떨어지는 폭죽 */
 function fireworks(){
-  for(let i=0;i<30;i++){
-    const fw=document.createElement('div');
-    fw.innerHTML='✨';
-    fw.style.position='absolute';
-    fw.style.left=Math.random()*100+'vw';
-    fw.style.top=Math.random()*100+'vh';
-    document.body.appendChild(fw);
+  for(let i=0;i<50;i++){
+    const el=document.createElement('div');
+    el.className='falling';
+    el.innerHTML=Math.random()>0.5?'✨':'💖';
 
-    setTimeout(()=>fw.remove(),1000);
+    el.style.left=Math.random()*100+'vw';
+    el.style.animationDuration=(2+Math.random()*2)+'s';
+
+    document.body.appendChild(el);
+
+    setTimeout(()=>el.remove(),3000);
   }
 }
 
-/* 📸 */
+/* 📸 콘텐츠 */
 function showContent(type){
-  const card=document.getElementById('card');
-  const photo=document.getElementById('photo');
-  const text=document.getElementById('text');
+  const modal=document.getElementById('modal');
+  const img=document.getElementById('modal-img');
+  const text=document.getElementById('modal-text');
 
-  card.style.display='block';
+  modal.style.display='flex';
 
   if(type==='100'){
-    photo.src='your100.jpg';
+    img.src='your100.jpg';
     text.innerText='100일 추억';
   }
   if(type==='200'){
-    photo.src='your200.jpg';
+    img.src='your200.jpg';
     text.innerText='200일';
   }
   if(type==='300'){
-    photo.src='your300.jpg';
+    img.src='your300.jpg';
     text.innerText='300일';
   }
   if(type==='1year'){
-    photo.src='your1year.jpg';
+    img.src='your1year.jpg';
     text.innerText='1주년';
   }
   if(type==='400'){
-    photo.src='your400.jpg';
+    img.src='your400.jpg';
     text.innerText='400일';
   }
   if(type==='500'){
-    photo.src='your500.jpg';
+    img.src='your500.jpg';
     text.innerText='500일';
   }
   if(type==='letter'){
-    photo.src='';
-    text.innerText='여기에 편지 넣기';
+    img.style.display='none';
+    text.innerText='여기에 편지 내용 넣기';
+  } else {
+    img.style.display='block';
   }
+}
+
+/* 모달 닫기 */
+function closeModal(){
+  document.getElementById('modal').style.display='none';
 }
 </script>
 
