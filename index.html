@@ -809,14 +809,14 @@ const sections = {
 };
 
 const timelineMeta = [
-  { key: '0', label: '0일'},
-  { key: '100', label: '100일'},
-  { key: '200', label: '200일'},
-  { key: '300', label: '300일'},
-  { key: '1year', label: '1년'},
-  { key: '400', label: '400일'},
-  { key: '500', label: '500일'},
-  { key: 'letter', label: '💌 Letter'}
+  { key: '0', label: '0일', sub: ''},
+  { key: '100', label: '100일', sub: ''},
+  { key: '200', label: '200일', sub: ''},
+  { key: '300', label: '300일', sub: ''},
+  { key: '1year', label: '1년', sub: ''},
+  { key: '400', label: '400일', sub: ''},
+  { key: '500', label: '500일', sub: ''},
+  { key: 'letter', label: '💌 Letter', sub: ''}
 ];
 
 const sectionLabels = Object.fromEntries(timelineMeta.map(item => [item.key, item.label]));
